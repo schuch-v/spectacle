@@ -1,8 +1,10 @@
-# Spectacle
+# Spectacle (With Gaps !)
 
 [![Build Status](https://travis-ci.org/eczarny/spectacle.svg?branch=master)](https://travis-ci.org/eczarny/spectacle)
 
 Easily organize windows without using a mouse.
+
+![Spectacle Gaps screenshot](https://raw.githubusercontent.com/schuch-v/spectacle/master/Spectacle_Gap.png)
 
 ## System requirements
 
