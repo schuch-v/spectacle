@@ -1,5 +1,7 @@
 #import "SpectacleUtilities.h"
 
+int gapSize = 0;
+
 @implementation SpectacleUtilities
 
 + (NSString *)applicationVersion

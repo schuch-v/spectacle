@@ -5,6 +5,7 @@
 #import "SpectacleJavaScriptEnvironment.h"
 #import "SpectacleWindowPositionCalculationRegistry.h"
 #import "SpectacleWindowPositionCalculationResult.h"
+#import "SpectacleUtilities.h"
 
 @implementation SpectacleWindowPositionCalculator
 {
@@ -66,7 +67,81 @@
                                                                    [_javaScriptEnvironment valueWithRect:visibleFrameOfSourceScreen],
                                                                    [_javaScriptEnvironment valueWithRect:visibleFrameOfDestinationScreen],
                                                                    ]];
-  return [SpectacleWindowPositionCalculationResult resultWithAction:action windowRect:[result toRect]];
+  SpectacleWindowPositionCalculationResult *windowResult = [SpectacleWindowPositionCalculationResult resultWithAction:action windowRect:[result toRect]];
+  int gapSizeMacOSBottom = 4;
+  int heightOffset = 0;
+  int widthOffset = 0;
+  int xOffset = 0;
+  int yOffset = 0;
+  
+  if (windowResult.action == kSpectacleWindowActionFullscreen) {
+    heightOffset = gapSize * 2;
+    widthOffset = gapSize * 2;
+    xOffset = gapSize;
+    yOffset = gapSize;
+  }
+  else if (windowResult.action == kSpectacleWindowActionLeftHalf) {
+    widthOffset = gapSize + gapSize / 2;
+    heightOffset = gapSize * 2;
+    xOffset = gapSize;
+    yOffset = gapSize;
+  }
+  else if (windowResult.action == kSpectacleWindowActionRightHalf) {
+    widthOffset = gapSize + gapSize / 2;
+    heightOffset = gapSize * 2;
+    xOffset = gapSize / 2;
+    yOffset = gapSize;
+  }
+  else if (windowResult.action == kSpectacleWindowActionUpperLeft) {
+    heightOffset = gapSize + gapSize / 2;
+    widthOffset = gapSize + gapSize / 2;
+    xOffset = gapSize;
+    yOffset = gapSize / 2;
+  }
+  else if (windowResult.action == kSpectacleWindowActionUpperRight) {
+    heightOffset = gapSize + gapSize / 2;
+    widthOffset = gapSize + gapSize / 2;
+    xOffset = gapSize / 2;
+    yOffset = gapSize / 2;
+  }
+  else if (windowResult.action == kSpectacleWindowActionLowerLeft) {
+    heightOffset = gapSize + gapSize / 2;
+    widthOffset = gapSize + gapSize / 2;
+    xOffset = gapSize;
+    yOffset = gapSize;
+  }
+  else if (windowResult.action == kSpectacleWindowActionLowerRight) {
+    heightOffset = gapSize + gapSize / 2;
+    widthOffset = gapSize + gapSize / 2;
+    xOffset = gapSize / 2;
+    yOffset = gapSize;
+  }
+  else if (windowResult.action == kSpectacleWindowActionTopHalf) {
+    widthOffset = gapSize * 2;
+    heightOffset = gapSize + gapSize / 2;
+    xOffset = gapSize;
+    yOffset = gapSize / 2;
+  }
+  else if (windowResult.action == kSpectacleWindowActionBottomHalf) {
+    widthOffset = gapSize * 2;
+    heightOffset = gapSize + gapSize / 2;
+    xOffset = gapSize;
+    yOffset = gapSize;
+  }
+  
+  CGRect windowRectGap = windowResult.windowRect;
+  windowRectGap.size.height -= heightOffset;
+  windowRectGap.size.width -= widthOffset;
+  windowRectGap.origin.x += xOffset;
+  windowRectGap.origin.y += yOffset;
+  
+  if (gapSize != 0 && ((int)visibleFrameOfDestinationScreen.origin.y % 10) == gapSizeMacOSBottom) {
+    windowRectGap.origin.y -= gapSizeMacOSBottom;
+    windowRectGap.size.height += gapSizeMacOSBottom;
+  }
+  
+  SpectacleWindowPositionCalculationResult *windowResultGap = [[SpectacleWindowPositionCalculationResult alloc] initWithAction:windowResult.action windowRect:windowRectGap];
+  return windowResultGap;
 }
 
 @end

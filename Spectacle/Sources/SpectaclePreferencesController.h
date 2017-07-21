@@ -36,6 +36,7 @@
 
 @property (nonatomic, strong) IBOutlet NSButton *loginItemEnabled;
 @property (nonatomic, strong) IBOutlet NSPopUpButton *statusItemEnabled;
+@property (nonatomic, strong) IBOutlet NSTextField *gapSizeInput;
 
 - (instancetype)initWithShortcutManager:(SpectacleShortcutManager *)shortcutManager
                   windowPositionManager:(SpectacleWindowPositionManager *)windowPositionManager

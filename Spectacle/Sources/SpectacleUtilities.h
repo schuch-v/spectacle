@@ -1,5 +1,7 @@
 #import <Cocoa/Cocoa.h>
 
+extern int gapSize;
+
 @interface SpectacleUtilities : NSObject
 
 + (NSString *)applicationVersion;

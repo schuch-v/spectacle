@@ -31,6 +31,8 @@
     _windowPositionManager = windowPositionManager;
     _shortcutStorage = shortcutStorage;
   }
+  NSUserDefaults *userDefaults = NSUserDefaults.standardUserDefaults;
+  gapSize = (int)[userDefaults integerForKey:@"GapSize"];
   return self;
 }
 
@@ -75,6 +77,7 @@
   [self.statusItemEnabled selectItemWithTag:isStatusItemEnabled ? 0 : 1];
   self.window.title = [@"Spectacle " stringByAppendingString:SpectacleUtilities.applicationVersion];
   self.footerView.wantsLayer = YES;
+  [[self.gapSizeInput cell] setIntValue:gapSize];
 }
 
 - (void)shortcutRecorder:(SpectacleShortcutRecorder *)shortcutRecorder
@@ -177,6 +180,12 @@ didClearExistingShortcut:(SpectacleShortcut *)shortcut
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self];
     [userDefaults setBool:isStatusItemEnabled forKey:@"StatusItemEnabled"];
   }
+}
+
+- (IBAction)gapSizeChanged:(id)sender {
+  gapSize = (int)self.gapSizeInput.integerValue;
+  NSUserDefaults *userDefaults = NSUserDefaults.standardUserDefaults;
+  [userDefaults setInteger:gapSize forKey:@"GapSize"];
 }
 
 - (void)dealloc

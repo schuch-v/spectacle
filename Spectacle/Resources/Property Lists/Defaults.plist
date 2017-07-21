@@ -16,5 +16,7 @@
 	<array/>
 	<key>StatusItemEnabled</key>
 	<true/>
+	<key>GapSize</key>
+	<integer>0</integer>
 </dict>
 </plist>
